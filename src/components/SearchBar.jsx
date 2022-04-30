@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Searchbar } from 'react-native-paper';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-const SearchBar = ({ sizes }) => {
+const SearchBar = () => {
+	const theme = useSelector((state) => state.base);
+
 	const styles = StyleSheet.create({
 		container: {
-			padding: sizes.md,
+			padding: theme.size.md,
 		},
 	});
 
@@ -17,10 +19,4 @@ const SearchBar = ({ sizes }) => {
 	);
 };
 
-function mapStoreToProps(store) {
-	return {
-		sizes: store.base.sizes,
-	};
-}
-
-export default connect(mapStoreToProps)(SearchBar);
+export default SearchBar;

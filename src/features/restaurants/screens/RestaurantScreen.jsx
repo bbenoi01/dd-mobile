@@ -6,18 +6,20 @@ import {
 	StyleSheet,
 	Platform,
 } from 'react-native';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import SearchBar from '../../../components/SearchBar';
 import RestaurantInfo from '../components/RestaurantInfo';
 
-const RestaurantScreen = ({ sizes, space }) => {
+const RestaurantScreen = () => {
+	const theme = useSelector((state) => state.base);
+
 	const styles = StyleSheet.create({
 		container: {
 			flex: 1,
-			paddingTop: Platform.OS === 'android' ? sizes.xl : null,
+			paddingTop: Platform.OS === 'android' ? theme.size.xl : null,
 		},
 		list: {
-			padding: space[3],
+			padding: theme.space[3],
 		},
 	});
 
@@ -41,11 +43,4 @@ const RestaurantScreen = ({ sizes, space }) => {
 	);
 };
 
-function mapStoreToProps(store) {
-	return {
-		sizes: store.base.sizes,
-		space: store.base.space,
-	};
-}
-
-export default connect(mapStoreToProps)(RestaurantScreen);
+export default RestaurantScreen;

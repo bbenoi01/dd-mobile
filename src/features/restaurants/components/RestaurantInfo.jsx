@@ -1,40 +1,34 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Image, Text, View, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import star from '../../../../assets/star';
 import open from '../../../../assets/open';
 
-const RestaurantInfo = ({
-	sizes,
-	colors,
-	space,
-	fonts,
-	fontSizes,
-	fontWeights,
-	restaurant = {},
-}) => {
+const RestaurantInfo = ({ restaurant = {} }) => {
+	const theme = useSelector((state) => state.base);
+
 	const styles = StyleSheet.create({
 		card: {
 			backgroundColor: 'whitesmoke',
-			marginVertical: space[2],
+			marginVertical: theme.space[2],
 		},
 		cover: {
-			padding: space[3],
+			padding: theme.space[3],
 			backgroundColor: 'whitesmoke',
 		},
 		info: {
-			padding: space[3],
+			padding: theme.space[3],
 		},
 		title: {
-			fontFamily: fonts.heading,
-			fontSize: fontSizes.body,
-			color: colors.ui.primary,
+			fontFamily: theme.font.fonts.heading,
+			fontSize: theme.font.fontSizes.body,
+			color: theme.color.ui.primary,
 		},
 		rating: {
 			flexDirection: 'row',
-			paddingVertical: space[1],
+			paddingVertical: theme.space[1],
 			justifyContent: 'space-between',
 			alignItems: 'center',
 		},
@@ -48,21 +42,22 @@ const RestaurantInfo = ({
 			alignItems: 'center',
 		},
 		closed: {
-			color: colors.ui.error,
-			fontFamily: fonts.body,
-			fontSize: fontSizes.button,
+			color: theme.color.ui.error,
+			fontFamily: theme.font.fonts.body,
+			fontSize: theme.font.fontSizes.button,
 		},
 		icon: {
-			width: sizes.md,
-			height: sizes.md,
+			width: theme.size.md,
+			height: theme.size.md,
 		},
 		address: {
-			fontFamily: fonts.body,
-			fontSize: fontSizes.caption,
+			fontFamily: theme.font.fonts.body,
+			fontSize: theme.font.fontSizes.caption,
 		},
 	});
 
 	const {
+		id = 1,
 		name = 'Some Restaurant',
 		icon = 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png',
 		photos = [
@@ -79,11 +74,7 @@ const RestaurantInfo = ({
 	return (
 		<View>
 			<Card elevation={5} style={styles.card}>
-				<Card.Cover
-					key={name}
-					style={styles.cover}
-					source={{ uri: photos[0] }}
-				/>
+				<Card.Cover key={id} style={styles.cover} source={{ uri: photos[0] }} />
 				<View style={styles.info}>
 					<Text style={styles.title}>{name}</Text>
 					<View style={styles.rating}>
@@ -91,9 +82,9 @@ const RestaurantInfo = ({
 							{ratingArray.map((item) => (
 								<SvgXml
 									xml={star}
-									width={sizes.md}
-									height={sizes.md}
-									key={ratingArray.indexOf(item)}
+									width={theme.size.md}
+									height={theme.size.md}
+									key={ratingArray.indexOf(item + 1)}
 								/>
 							))}
 						</View>
@@ -102,7 +93,11 @@ const RestaurantInfo = ({
 								<Text style={styles.closed}>CLOSED TEMPORARILY</Text>
 							)}
 							{isOpenNow && (
-								<SvgXml xml={open} width={sizes.md} height={sizes.md} />
+								<SvgXml
+									xml={open}
+									width={theme.size.md}
+									height={theme.size.md}
+								/>
 							)}
 							<Image style={styles.icon} source={{ uri: icon }} />
 						</View>
@@ -114,15 +109,4 @@ const RestaurantInfo = ({
 	);
 };
 
-function mapStoreToProps(store) {
-	return {
-		sizes: store.base.sizes,
-		fonts: store.base.fonts,
-		fontSizes: store.base.fontSizes,
-		fontWeights: store.base.fontWeights,
-		space: store.base.space,
-		colors: store.base.colors,
-	};
-}
-
-export default connect(mapStoreToProps)(RestaurantInfo);
+export default RestaurantInfo;
