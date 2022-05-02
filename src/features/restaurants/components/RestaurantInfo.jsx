@@ -36,17 +36,21 @@ const RestaurantInfo = ({ restaurant }) => {
 		},
 		starContainer: {
 			flexDirection: 'row',
+			flex: 6,
 		},
 		detailContainer: {
-			width: '50%',
+			flex: 6,
 			flexDirection: 'row',
-			justifyContent: 'space-between',
+			justifyContent: 'flex-end',
 			alignItems: 'center',
 		},
 		closed: {
 			color: theme.color.ui.error,
 			fontFamily: theme.font.fonts.body,
 			fontSize: theme.font.fontSizes.button,
+		},
+		open: {
+			marginHorizontal: theme.space[1],
 		},
 		icon: {
 			width: theme.size.md,
@@ -103,6 +107,7 @@ const RestaurantInfo = ({ restaurant }) => {
 								)}
 								{restaurant.isOpenNow && (
 									<SvgXml
+										style={styles.open}
 										xml={open}
 										width={theme.size.md}
 										height={theme.size.md}
