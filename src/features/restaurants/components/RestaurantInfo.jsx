@@ -1,12 +1,14 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Image, Text, View, StyleSheet } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { Image, Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
-import star from '../../../../assets/star';
+import starIcon from '../../../../assets/star';
 import open from '../../../../assets/open';
 
-const RestaurantInfo = ({ restaurant = {} }) => {
+import { getRestaurants } from '../../../redux/slices/restaurantSlice';
+
+const RestaurantInfo = ({ restaurant }) => {
 	const theme = useSelector((state) => state.base);
 
 	const styles = StyleSheet.create({
@@ -56,55 +58,63 @@ const RestaurantInfo = ({ restaurant = {} }) => {
 		},
 	});
 
-	const {
-		id = 1,
-		name = 'Some Restaurant',
-		icon = 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png',
-		photos = [
-			'https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg',
-		],
-		address = '100 some random street',
-		isOpenNow = true,
-		rating = 4,
-		isClosedTemporarily = true,
-	} = restaurant;
+	const dispatch = useDispatch();
 
-	const ratingArray = Array.from(new Array(Math.floor(rating)));
+	function getRandomInt(max) {
+		return Math.floor(Math.random() * max + 1);
+	}
+
+	const renderRating = () => {
+		let content = [];
+
+		for (let i = 0; i < parseInt(restaurant.rating); i++) {
+			const star = starIcon;
+			content.push(
+				<SvgXml
+					xml={star}
+					width={theme.size.md}
+					height={theme.size.md}
+					key={getRandomInt(20000)}
+				/>
+			);
+		}
+		return content;
+	};
 
 	return (
 		<View>
-			<Card elevation={5} style={styles.card}>
-				<Card.Cover key={id} style={styles.cover} source={{ uri: photos[0] }} />
-				<View style={styles.info}>
-					<Text style={styles.title}>{name}</Text>
-					<View style={styles.rating}>
-						<View style={styles.starContainer}>
-							{ratingArray.map((item) => (
-								<SvgXml
-									xml={star}
-									width={theme.size.md}
-									height={theme.size.md}
-									key={ratingArray.indexOf(item + 1)}
-								/>
-							))}
+			<TouchableOpacity
+				onPress={() => dispatch(getRestaurants('51.219448,4.402464'))}
+			>
+				<Card elevation={5} style={styles.card}>
+					<Card.Cover
+						style={styles.cover}
+						source={{ uri: restaurant.photos[0] }}
+					/>
+					<View style={styles.info}>
+						<Text style={styles.title}>{restaurant.name}</Text>
+						<View style={styles.rating}>
+							<View style={styles.starContainer}>
+								{renderRating(restaurant.rating)}
+							</View>
+							<View style={styles.detailContainer}>
+								{restaurant.isClosedTemporarily && (
+									<Text style={styles.closed}>CLOSED TEMPORARILY</Text>
+								)}
+								{restaurant.isOpenNow && (
+									<SvgXml
+										xml={open}
+										width={theme.size.md}
+										height={theme.size.md}
+									/>
+								)}
+								<Image style={styles.icon} source={{ uri: restaurant.icon }} />
+							</View>
 						</View>
-						<View style={styles.detailContainer}>
-							{isClosedTemporarily && (
-								<Text style={styles.closed}>CLOSED TEMPORARILY</Text>
-							)}
-							{isOpenNow && (
-								<SvgXml
-									xml={open}
-									width={theme.size.md}
-									height={theme.size.md}
-								/>
-							)}
-							<Image style={styles.icon} source={{ uri: icon }} />
-						</View>
+						<Text style={styles.address}>{restaurant.address}</Text>
 					</View>
-					<Text style={styles.address}>{address}</Text>
-				</View>
-			</Card>
+				</Card>
+			</TouchableOpacity>
 		</View>
 	);
 };

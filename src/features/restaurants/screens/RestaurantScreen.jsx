@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
 	SafeAreaView,
 	View,
@@ -6,12 +6,17 @@ import {
 	StyleSheet,
 	Platform,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { ActivityIndicator, Colors } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../../../components/SearchBar';
 import RestaurantInfo from '../components/RestaurantInfo';
 
+import { getRestaurants } from '../../../redux/slices/restaurantSlice';
+
 const RestaurantScreen = () => {
 	const theme = useSelector((state) => state.base);
+	const restaurantData = useSelector((state) => state.restaurant);
+	const dispatch = useDispatch();
 
 	const styles = StyleSheet.create({
 		container: {
@@ -23,20 +28,27 @@ const RestaurantScreen = () => {
 		},
 	});
 
+	useEffect(() => {
+		dispatch(getRestaurants('51.219448,4.402464'));
+	}, []);
+
 	return (
 		<SafeAreaView style={styles.container}>
+			{restaurantData.loading && (
+				<View style={{ position: 'absolute', top: '50%', left: '50%' }}>
+					<ActivityIndicator
+						style={{ marginLeft: -100, marginTop: -100 }}
+						size={200}
+						animating={true}
+						color={Colors.blue300}
+					/>
+				</View>
+			)}
 			<SearchBar />
 			<FlatList
-				data={[
-					{ name: 1 },
-					{ name: 2 },
-					{ name: 3 },
-					{ name: 4 },
-					{ name: 5 },
-					{ name: 6 },
-				]}
-				renderItem={() => <RestaurantInfo />}
-				keyExtractor={(item) => item.name}
+				data={restaurantData.restaurants}
+				renderItem={({ item }) => <RestaurantInfo restaurant={item} />}
+				keyExtractor={(item) => item.placeId}
 				contentContainerStyle={styles.list}
 			/>
 		</SafeAreaView>
