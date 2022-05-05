@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 import store from './src/redux/rootStore';
 import DDApp from './src/DDApp';

@@ -8,19 +8,9 @@ import {
 } from '@expo-google-fonts/oswald';
 import { useFonts as useLato, Lato_400Regular } from '@expo-google-fonts/lato';
 import { Ionicons } from '@expo/vector-icons';
-import RestaurantScreen from './features/restaurants/screens/RestaurantScreen';
 
-function HomeScreen() {
-	return <RestaurantScreen />;
-}
-
-function MapScreen() {
-	return (
-		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-			<Text>Map Screen</Text>
-		</View>
-	);
-}
+import { RestaurantNavigator } from './navigation/restaurantNavigator';
+import MapScreen from './features/map/screens/MapScreen';
 
 function SettingsScreen() {
 	return (
@@ -33,7 +23,7 @@ function SettingsScreen() {
 const Tab = createBottomTabNavigator();
 
 const TAB_ICON = {
-	Restaurants: 'md-restaurant',
+	RestaurantStack: 'md-restaurant',
 	Map: 'md-map',
 	Settings: 'md-settings',
 };
@@ -46,6 +36,7 @@ const createScreenOptions = ({ route }) => {
 		),
 		tabBarActiveTintColor: 'tomato',
 		tabBarInactiveTintColor: 'grey',
+		headerShown: false,
 	};
 };
 
@@ -64,7 +55,7 @@ export default function App() {
 	return (
 		<NavigationContainer>
 			<Tab.Navigator screenOptions={createScreenOptions}>
-				<Tab.Screen name='Restaurants' component={HomeScreen} />
+				<Tab.Screen name='RestaurantStack' component={RestaurantNavigator} />
 				<Tab.Screen name='Map' component={MapScreen} />
 				<Tab.Screen name='Settings' component={SettingsScreen} />
 			</Tab.Navigator>

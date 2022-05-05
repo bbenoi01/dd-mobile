@@ -13,6 +13,7 @@ export const getRestaurants = createAsyncThunk(
 				});
 				return {
 					...item,
+					address: item.vicinity,
 					isOpenNow: item.opening_hours && item.opening_hours.open_now,
 					isClosedTemporarily: item.business_status === 'CLOSED_TEMPORARILY',
 				};
@@ -45,7 +46,6 @@ export const restaurantSlice = createSlice({
 		[getRestaurants.rejected]: (state) => {
 			state.loading = false;
 			state.error = true;
-			console.log;
 		},
 	},
 });

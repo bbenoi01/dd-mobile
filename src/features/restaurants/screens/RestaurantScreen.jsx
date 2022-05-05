@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {
 	SafeAreaView,
 	View,
+	TouchableOpacity,
 	FlatList,
 	StyleSheet,
 	Platform,
@@ -13,9 +14,10 @@ import RestaurantInfo from '../components/RestaurantInfo';
 
 import { getRestaurants } from '../../../redux/slices/restaurantSlice';
 
-const RestaurantScreen = () => {
+const RestaurantScreen = ({ navigation }) => {
 	const theme = useSelector((state) => state.base);
 	const restaurantData = useSelector((state) => state.restaurant);
+	const locationData = useSelector((state) => state.location);
 	const dispatch = useDispatch();
 
 	const styles = StyleSheet.create({
@@ -29,25 +31,33 @@ const RestaurantScreen = () => {
 	});
 
 	useEffect(() => {
-		dispatch(getRestaurants('51.219448,4.402464'));
-	}, []);
+		dispatch(getRestaurants(locationData.location));
+	}, [locationData.location]);
 
 	return (
 		<SafeAreaView style={styles.container}>
-			{restaurantData.loading && (
+			{restaurantData.loading || locationData.loading ? (
 				<View style={{ position: 'absolute', top: '50%', left: '50%' }}>
 					<ActivityIndicator
-						style={{ marginLeft: -100, marginTop: -100 }}
-						size={200}
+						style={{ marginLeft: -50, marginTop: -50 }}
+						size={100}
 						animating={true}
 						color={Colors.blue300}
 					/>
 				</View>
-			)}
+			) : null}
 			<SearchBar />
 			<FlatList
 				data={restaurantData.restaurants}
-				renderItem={({ item }) => <RestaurantInfo restaurant={item} />}
+				renderItem={({ item }) => (
+					<TouchableOpacity
+						onPress={() =>
+							navigation.navigate('RestaurantDetail', { restaurant: item })
+						}
+					>
+						<RestaurantInfo navigation={navigation} restaurant={item} />
+					</TouchableOpacity>
+				)}
 				keyExtractor={(item) => item.placeId}
 				contentContainerStyle={styles.list}
 			/>

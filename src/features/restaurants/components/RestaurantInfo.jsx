@@ -1,12 +1,10 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Image, Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Image, Text, View, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Card } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import starIcon from '../../../../assets/star';
 import open from '../../../../assets/open';
-
-import { getRestaurants } from '../../../redux/slices/restaurantSlice';
 
 const RestaurantInfo = ({ restaurant }) => {
 	const theme = useSelector((state) => state.base);
@@ -62,8 +60,6 @@ const RestaurantInfo = ({ restaurant }) => {
 		},
 	});
 
-	const dispatch = useDispatch();
-
 	function getRandomInt(max) {
 		return Math.floor(Math.random() * max + 1);
 	}
@@ -87,39 +83,35 @@ const RestaurantInfo = ({ restaurant }) => {
 
 	return (
 		<View>
-			<TouchableOpacity
-				onPress={() => dispatch(getRestaurants('51.219448,4.402464'))}
-			>
-				<Card elevation={5} style={styles.card}>
-					<Card.Cover
-						style={styles.cover}
-						source={{ uri: restaurant.photos[0] }}
-					/>
-					<View style={styles.info}>
-						<Text style={styles.title}>{restaurant.name}</Text>
-						<View style={styles.rating}>
-							<View style={styles.starContainer}>
-								{renderRating(restaurant.rating)}
-							</View>
-							<View style={styles.detailContainer}>
-								{restaurant.isClosedTemporarily && (
-									<Text style={styles.closed}>CLOSED TEMPORARILY</Text>
-								)}
-								{restaurant.isOpenNow && (
-									<SvgXml
-										style={styles.open}
-										xml={open}
-										width={theme.size.md}
-										height={theme.size.md}
-									/>
-								)}
-								<Image style={styles.icon} source={{ uri: restaurant.icon }} />
-							</View>
+			<Card elevation={5} style={styles.card}>
+				<Card.Cover
+					style={styles.cover}
+					source={{ uri: restaurant.photos[0] }}
+				/>
+				<View style={styles.info}>
+					<Text style={styles.title}>{restaurant.name}</Text>
+					<View style={styles.rating}>
+						<View style={styles.starContainer}>
+							{renderRating(restaurant.rating)}
 						</View>
-						<Text style={styles.address}>{restaurant.address}</Text>
+						<View style={styles.detailContainer}>
+							{restaurant.isClosedTemporarily && (
+								<Text style={styles.closed}>CLOSED TEMPORARILY</Text>
+							)}
+							{restaurant.isOpenNow && (
+								<SvgXml
+									style={styles.open}
+									xml={open}
+									width={theme.size.md}
+									height={theme.size.md}
+								/>
+							)}
+							<Image style={styles.icon} source={{ uri: restaurant.icon }} />
+						</View>
 					</View>
-				</Card>
-			</TouchableOpacity>
+					<Text style={styles.address}>{restaurant.address}</Text>
+				</View>
+			</Card>
 		</View>
 	);
 };
