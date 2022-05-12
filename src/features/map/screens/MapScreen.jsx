@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import MapView from 'react-native-maps';
 import { useSelector } from 'react-redux';
-import MapSearch from '../components/mapSearch';
+import MapSearch from '../components/MapSearch';
+import MapCallout from '../components/MapCallout';
 
-const MapScreen = () => {
+const MapScreen = ({ navigation }) => {
 	const restaurantData = useSelector((state) => state.restaurant);
 	const locationData = useSelector((state) => state.location);
 
@@ -39,7 +40,13 @@ const MapScreen = () => {
 								longitude: restaurant.geometry.location.lng,
 							}}
 						>
-							<MapView.Callout></MapView.Callout>
+							<MapView.Callout
+								onPress={() =>
+									navigation.navigate('RestaurantDetail', { restaurant })
+								}
+							>
+								<MapCallout restaurant={restaurant} />
+							</MapView.Callout>
 						</MapView.Marker>
 					);
 				})}

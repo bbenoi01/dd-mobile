@@ -11,7 +11,6 @@ export const getLocation = createAsyncThunk(
 		try {
 			const res = await locations[searchTerm];
 			const formattedRes = camelize(res);
-			console.log(formattedRes);
 			const { geometry } = formattedRes.results[0];
 			const { lat, lng } = geometry.location;
 			const locationString = `${lat},${lng}`;

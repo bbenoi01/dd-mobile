@@ -22,7 +22,9 @@ const SearchBar = () => {
 				placeholder='Search'
 				value={searchTerm}
 				onChangeText={(text) => dispatch(setSearchTerm(text))}
-				onSubmitEditing={() => dispatch(getLocation(searchTerm.toLowerCase()))}
+				onSubmitEditing={() =>
+					dispatch(getLocation(searchTerm.trim().toLowerCase()))
+				}
 			/>
 		</View>
 	);
