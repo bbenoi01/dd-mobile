@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getLocation, setSearchTerm } from '../redux/slices/locationSlice';
 
-const SearchBar = () => {
+const SearchBar = ({ isFavToggled, onFavToggle }) => {
 	const dispatch = useDispatch();
 	const theme = useSelector((state) => state.base);
 	const searchTerm = useSelector((state) => state.location.searchTerm);
@@ -19,6 +19,8 @@ const SearchBar = () => {
 	return (
 		<View style={styles.container}>
 			<Searchbar
+				icon={isFavToggled ? 'heart' : 'heart-outline'}
+				onIconPress={onFavToggle}
 				placeholder='Search'
 				value={searchTerm}
 				onChangeText={(text) => dispatch(setSearchTerm(text))}

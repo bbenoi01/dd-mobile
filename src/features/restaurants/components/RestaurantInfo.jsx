@@ -5,9 +5,11 @@ import { Card } from 'react-native-paper';
 import { SvgXml } from 'react-native-svg';
 import starIcon from '../../../../assets/star';
 import open from '../../../../assets/open';
+import Favorite from '../../../components/Favorite';
 
 const RestaurantInfo = ({ restaurant }) => {
 	const theme = useSelector((state) => state.base);
+	const favs = useSelector((state) => state.favorites.favorites);
 
 	const styles = StyleSheet.create({
 		card: {
@@ -84,6 +86,7 @@ const RestaurantInfo = ({ restaurant }) => {
 	return (
 		<View>
 			<Card elevation={5} style={styles.card}>
+				<Favorite restaurant={restaurant} />
 				<Card.Cover
 					style={styles.cover}
 					source={{ uri: restaurant.photos[0] }}

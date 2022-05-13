@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	SafeAreaView,
 	View,
@@ -10,6 +10,7 @@ import {
 import { ActivityIndicator, Colors } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../../../components/SearchBar';
+import FavBar from '../../../components/FavBar';
 import RestaurantInfo from '../components/RestaurantInfo';
 
 import { getRestaurants } from '../../../redux/slices/restaurantSlice';
@@ -18,6 +19,7 @@ const RestaurantScreen = ({ navigation }) => {
 	const theme = useSelector((state) => state.base);
 	const restaurantData = useSelector((state) => state.restaurant);
 	const locationData = useSelector((state) => state.location);
+	const [isToggled, setIsToggled] = useState(false);
 	const dispatch = useDispatch();
 
 	const styles = StyleSheet.create({
@@ -46,7 +48,11 @@ const RestaurantScreen = ({ navigation }) => {
 					/>
 				</View>
 			) : null}
-			<SearchBar />
+			<SearchBar
+				isFavToggled={isToggled}
+				onFavToggle={() => setIsToggled(!isToggled)}
+			/>
+			{isToggled && <FavBar onNav={navigation.navigate} />}
 			<FlatList
 				data={restaurantData.restaurants}
 				renderItem={({ item }) => (
