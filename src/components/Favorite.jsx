@@ -7,7 +7,7 @@ import { addFavorite, removeFavorite } from '../redux/slices/favoritesSlice';
 
 const Favorite = ({ restaurant }) => {
 	const favs = useSelector((state) => state.favorites.favorites);
-	const isFav = favs.find((r) => r.placeId === restaurant.placeId);
+	const isFav = favs?.find((r) => r.placeId === restaurant.placeId);
 	const dispatch = useDispatch();
 
 	return (

@@ -34,7 +34,7 @@ export const baseStyleSlice = createSlice({
 		font: {
 			fonts: {
 				body: 'Oswald_400Regular',
-				heading: 'Lato_400Regular',
+				heading: 'Oswald_700Bold',
 				monospace: 'Oswald_400Regular',
 			},
 			fontWeights: {

@@ -1,6 +1,7 @@
+import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text, View } from 'react-native';
+import { Text, SafeAreaView } from 'react-native';
 import {
 	useFonts as useOswald,
 	Oswald_400Regular,
@@ -11,6 +12,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { RestaurantNavigator } from './navigation/restaurantNavigator';
 import MapScreen from './features/map/screens/MapScreen';
+
+import { AuthNavigator } from './navigation/accountNavigator';
 
 function SettingsScreen() {
 	return (
@@ -41,6 +44,8 @@ const createScreenOptions = ({ route }) => {
 };
 
 export default function App() {
+	const user = useSelector((state) => state.auth.user);
+
 	const [oswaldLoaded] = useOswald({
 		Oswald_400Regular,
 		Oswald_700Bold,
@@ -54,11 +59,15 @@ export default function App() {
 
 	return (
 		<NavigationContainer>
-			<Tab.Navigator screenOptions={createScreenOptions}>
-				<Tab.Screen name='RestaurantStack' component={RestaurantNavigator} />
-				<Tab.Screen name='Map' component={MapScreen} />
-				<Tab.Screen name='Settings' component={SettingsScreen} />
-			</Tab.Navigator>
+			{user ? (
+				<Tab.Navigator screenOptions={createScreenOptions}>
+					<Tab.Screen name='RestaurantStack' component={RestaurantNavigator} />
+					<Tab.Screen name='Map' component={MapScreen} />
+					<Tab.Screen name='Settings' component={SettingsScreen} />
+				</Tab.Navigator>
+			) : (
+				<AuthNavigator />
+			)}
 		</NavigationContainer>
 	);
 }
