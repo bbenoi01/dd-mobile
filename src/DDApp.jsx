@@ -9,19 +9,10 @@ import {
 } from '@expo-google-fonts/oswald';
 import { useFonts as useLato, Lato_400Regular } from '@expo-google-fonts/lato';
 import { Ionicons } from '@expo/vector-icons';
-
+import { AuthNavigator } from './navigation/accountNavigator';
 import { RestaurantNavigator } from './navigation/restaurantNavigator';
 import MapScreen from './features/map/screens/MapScreen';
-
-import { AuthNavigator } from './navigation/accountNavigator';
-
-function SettingsScreen() {
-	return (
-		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-			<Text>Settings Screen</Text>
-		</View>
-	);
-}
+import SettingsScreen from './features/settings/screens/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
 

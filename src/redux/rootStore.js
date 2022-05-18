@@ -16,19 +16,25 @@ import restaurantReducer from './slices/restaurantSlice';
 import locationReducer from './slices/locationSlice';
 import favoritesReducer from './slices/favoritesSlice';
 
-const persistConfig = {
-	key: 'root',
+const authPersistConfig = {
+	key: 'auth',
 	storage: AsyncStorage,
-	whitelist: ['user', 'token', 'favorites'],
+	whitelist: ['user', 'token'],
+};
+
+const favPersistConfig = {
+	key: 'favorites',
+	storage: AsyncStorage,
+	whitelist: ['favorites'],
 };
 
 export const store = configureStore({
 	reducer: {
-		auth: persistReducer(persistConfig, authReducer),
+		auth: persistReducer(authPersistConfig, authReducer),
 		base: baseStyleReducer,
 		restaurant: restaurantReducer,
 		location: locationReducer,
-		favorites: persistReducer(persistConfig, favoritesReducer),
+		favorites: persistReducer(favPersistConfig, favoritesReducer),
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({

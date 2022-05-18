@@ -65,7 +65,7 @@ const RegisterScreen = ({ navigation }) => {
 			source={require('../../../../assets/home_bg.jpg')}
 		>
 			<View style={styles.cover} />
-			<Text style={styles.title}>Meals To Go</Text>
+			<Text style={styles.title}>Delicious Deliveries</Text>
 			<View style={styles.container}>
 				<TextInput
 					style={styles.input}
